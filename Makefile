@@ -1,10 +1,11 @@
 NAME = inception
+DOMAIN_NAME = jde-meo.42.fr
 
 $(NAME): up
 
 all: up
 
-up: 
+up:
 	docker compose -f docker-compose.yml up --build -d
 
 down:

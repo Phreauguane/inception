@@ -12,18 +12,19 @@ RUN apt-get update && apt-get install -y \
     && chmod -R 755 /var/www/html \
     && chown -R www-data:www-data /var/www/html
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.config
 
 COPY index.html /var/www/html/
 
 ARG DOMAIN_NAME
 ENV DOMAIN_NAME=${DOMAIN_NAME}
 
-RUN openssl req -x509 -nodes \
+RUN openssl req -x509 -nodes -days 365 \
+    -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/inception.key \
     -out /etc/nginx/ssl/inception.crt \
-    -days 365 \
-    -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=${DOMAIN_NAME}/UID=jde-meo"
+    -subj "/CN=jde-meo.42.fr" \
+    -addext "subjectAltName = DNS:jde-meo.42.fr,DNS:localhost"
 
 RUN cat /etc/nginx/ssl/inception*
 
