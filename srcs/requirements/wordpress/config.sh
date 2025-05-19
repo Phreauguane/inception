@@ -4,10 +4,12 @@ set -e
 echo "Starting configuration script..."
 
 echo "Waiting for database connection..."
+
 until mysql -h"mariadb" -u"$SQL_USER" -p"$SQL_PASSWORD" -e "USE $SQL_DATABASE;" &>/dev/null; do
     echo "Waiting for database to be ready..."
     sleep 2
 done
+
 echo "Database connection established!"
 
 cd /var/www/wordpress
@@ -42,6 +44,17 @@ if [ ! -f wp-config.php ]; then
         --role=author \
         --user_pass=$WP_PASSWORD \
         --path=/var/www/wordpress || true
+
+	echo "Disabling comment moderation..."
+	wp option update comment_moderation 0 \
+		--allow-root \
+		--path='/var/www/wordpress'
+	wp option update comment_previously_approved 0 \
+		--allow-root \
+		--path='/var/www/wordpress'
+	wp option update comment_max_links 0 \
+		--allow-root \
+		--path='/var/www/wordpress'
 fi
 
 echo "Checking PHP-FPM configuration..."
