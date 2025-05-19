@@ -18,8 +18,8 @@ COPY 50-server.cnf /etc/mysql/mariadb.conf.d/.
 COPY init.sh .
 
 RUN sed -i "s/bind-address*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf \
-    && chmod +x init.sh
+    && chmod 777 init.sh
 
 EXPOSE 3306
 
-CMD ["sh", "-c", "./init.sh"]
+CMD ["./init.sh"]

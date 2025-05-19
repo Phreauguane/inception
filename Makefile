@@ -6,13 +6,14 @@ $(NAME): up
 all: up
 
 up:
-	docker compose -f docker-compose.yml up --build -d
+	docker compose -f srcs/docker-compose.yml up --build -d
 
 down:
-	docker compose -f docker-compose.yml down
+	docker compose -f srcs/docker-compose.yml down
 
 clean: down
-	docker system prune -a
+	echo "y\
+	" | docker system prune -a
 
 fclean: clean
 	docker volume rm -f miaou $$(docker volume ls -q)

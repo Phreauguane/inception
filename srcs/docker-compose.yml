@@ -37,6 +37,8 @@ services:
       - inception
     env_file: .env
     restart: always
+    ports:
+      - "3306:3306"
     expose: 
       - '3306'
 
@@ -44,9 +46,17 @@ volumes:
   wordpress:
     name: wordpress
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jde-meo/data/wordpress
   mariadb:
     name: mariadb
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jde-meo/data/mariadb
 
 networks:
   inception:
